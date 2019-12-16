@@ -13,15 +13,22 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeSuite;
 
 import com.aventstack.extentreports.ExtentReports;
+
 import com.aventstack.extentreports.ExtentTest;
 import io.github.bonigarcia.wdm.WebDriverManager;
+
+import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
+
 
 
 public class BaseClass
 {
+
 	String browser=null;
 	Properties prop;
 	WebDriver driver;
+	public ExtentHtmlReporter htmlreport;
+	public ExtentReports report;
 	
 	public BaseClass()
 	{
@@ -36,6 +43,18 @@ public class BaseClass
 		{
 			e.printStackTrace();
 		}
+
+	}
+	
+	@BeforeSuite
+	public void Report_setup()
+	{
+		htmlreport = new ExtentHtmlReporter(System.getProperty("user.dir")+"\\Report\\report.html");
+		htmlreport.config().setDocumentTitle("Automation Report");
+		htmlreport.config().setReportName("UI Testing report");
+		report =  new ExtentReports();
+		report.attachReporter(htmlreport);
+
 	}
 	
 	
