@@ -9,6 +9,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeSuite;
 import com.aventstack.extentreports.ExtentReports;
@@ -76,5 +78,19 @@ public class BaseClass
     	}
     	driver.get(prop.getProperty("url"));
     }
+    
+    @AfterTest
+    public void Test_Result()
+    {
+    	
+    }
+    
+    
+    @AfterSuite
+    	public void report_flush()
+    	{
+    	report.flush();
+        }
+    
     
 }
