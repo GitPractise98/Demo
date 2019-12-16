@@ -9,6 +9,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeSuite;
 import com.aventstack.extentreports.ExtentReports;
@@ -75,6 +76,12 @@ public class BaseClass
     		driver=new InternetExplorerDriver();
     	}
     	driver.get(prop.getProperty("url"));
+    }
+    
+    @AfterClass
+    public void tearDown()
+    {
+    	driver.quit();
     }
     
 }
