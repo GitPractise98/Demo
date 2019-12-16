@@ -3,6 +3,7 @@ package com.qa.base;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.Properties;
 
 import org.openqa.selenium.WebDriver;
@@ -12,7 +13,9 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
@@ -77,23 +80,25 @@ public class BaseClass
     		WebDriverManager.iedriver().setup(); 
     		driver=new InternetExplorerDriver();
     	}
+    	driver.manage().window().maximize();
     	driver.get(prop.getProperty("url"));
     }
     
-
-    @AfterTest
-    public void Test_Result()
+    
+	
+	  @BeforeMethod public void beforeMethod(Method m) 
+	  {
+	  test=report.createTest(m.getName()); 
+	  }
+	 
+    
+    
+    @AfterMethod
+    public void afterMethod()
     {
-    	
+    	test=null;
     }
-    
-    
-    @AfterSuite
-    	public void report_flush()
-    	{
-    	report.flush();
-        }
-    
+   
     
 
     @AfterClass
@@ -101,5 +106,12 @@ public class BaseClass
     {
     	driver.quit();
     }
+    
+    @AfterSuite
+	public void report_flush()
+	{
+	report.flush();
+    }
+
 
 }
