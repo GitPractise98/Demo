@@ -4,21 +4,24 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.AfterTest;
+import org.testng.ITestResult;
 import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeSuite;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
-
+import com.aventstack.extentreports.Status;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
+import com.qa.util.TakeScreenShot;
+
 
 
 
@@ -81,25 +84,53 @@ public class BaseClass
     }
     
 
-    @AfterTest
-    public void Test_Result()
+    @AfterMethod
+    public void Test_Result(ITestResult result)
     {
+    	try
+		{
+		if(result.getStatus()==ITestResult.FAILURE)
+		{
+			test.log(Status.FAIL, "Test Case is failed : " + result.getName());
+			test.log(Status.FAIL, "Test Case is failed : " + result.getThrowable());
+		try
+		   {
+			TakeScreenShot.take_screenshot(driver, result.getName());
+	    	} 
+		catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+					
+		}
+		else if(result.getStatus()==ITestResult.SUCCESS)
+		{
+			test.log(Status.PASS, "Test case is pass : " + result.getName());
+		}
+		else if(result.getStatus()==ITestResult.SKIP)
+		{
+			test.log(Status.PASS, "Test case is pass : " + result.getName());
+			test.log(Status.FAIL, "Test Case is failed : " + result.getThrowable());
+
+		}		
+		}
+		catch (Exception e)
+		{
+			System.out.println(e.getMessage());
+		}
     	
-    }
-    
-    
-    @AfterSuite
-    	public void report_flush()
-    	{
-    	report.flush();
-        }
-    
-    
+    } 
 
     @AfterClass
     public void tearDown()
     {
     	driver.quit();
+    }
+    
+    @AfterSuite
+	public void report_flush()
+	{
+	report.flush();
     }
 
 }
