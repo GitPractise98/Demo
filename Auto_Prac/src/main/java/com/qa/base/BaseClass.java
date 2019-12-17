@@ -3,6 +3,7 @@ package com.qa.base;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.Properties;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -14,6 +15,7 @@ import org.testng.ITestResult;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
@@ -82,44 +84,26 @@ public class BaseClass
     	}
     	driver.get(prop.getProperty("url"));
     }
+
     
-
+	
+	  @BeforeMethod 
+	  public void beforeMethod(Method m) 
+	  {
+	  test=report.createTest(m.getName()); 
+	  }
+	 
+    
+    
     @AfterMethod
-    public void Test_Result(ITestResult result)
-    {
-    	try
-		{
-		if(result.getStatus()==ITestResult.FAILURE)
-		{
-			test.log(Status.FAIL, "Test Case is failed : " + result.getName());
-			test.log(Status.FAIL, "Test Case is failed : " + result.getThrowable());
-		try
-		   {
-			TakeScreenShot.take_screenshot(driver, result.getName());
-	    	} 
-		catch (Exception e) 
-			{
-				e.printStackTrace();
-			}
-					
-		}
-		else if(result.getStatus()==ITestResult.SUCCESS)
-		{
-			test.log(Status.PASS, "Test case is pass : " + result.getName());
-		}
-		else if(result.getStatus()==ITestResult.SKIP)
-		{
-			test.log(Status.PASS, "Test case is pass : " + result.getName());
-			test.log(Status.FAIL, "Test Case is failed : " + result.getThrowable());
+    public void afterMethod()
 
-		}		
-		}
-		catch (Exception e)
-		{
-			System.out.println(e.getMessage());
-		}
-    	
-    } 
+    {
+
+    	test=null;
+    }
+   
+ 
 
     @AfterClass
     public void tearDown()
@@ -132,5 +116,6 @@ public class BaseClass
 	{
 	report.flush();
     }
+
 
 }
