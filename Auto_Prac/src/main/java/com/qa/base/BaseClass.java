@@ -9,14 +9,19 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
 
+
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.testng.annotations.AfterSuite;
+
+import org.testng.annotations.AfterTest;
+
 import org.testng.ITestResult;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
@@ -25,9 +30,11 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
-
+import com.aventstack.extentreports.Status;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
+
+
 
 
 
@@ -86,11 +93,10 @@ public class BaseClass
     		WebDriverManager.iedriver().setup(); 
     		driver=new InternetExplorerDriver();
     	}
-    	driver.manage().window().maximize();
     	driver.get(prop.getProperty("url"));
     	
     }
-    
+
     
 	
 	  @BeforeMethod 
@@ -101,9 +107,13 @@ public class BaseClass
 	 
     
     
-    @AfterMethod
+  
     public void afterMethod(ITestResult result)
+
+
+
     {
+
     	test=null;
     	if(result.getStatus()==result.FAILURE)
     	{
@@ -121,7 +131,7 @@ public class BaseClass
     	}
     }
    
-    
+ 
 
     @AfterClass
     public void tearDown()
