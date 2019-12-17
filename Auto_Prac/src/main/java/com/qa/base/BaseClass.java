@@ -31,7 +31,7 @@ public class BaseClass
 {
 	String browser=null;
 	Properties prop;
-	WebDriver driver;
+	protected WebDriver driver;
 	ExtentHtmlReporter htmlreport;
     public ExtentReports report;
 	public ExtentTest test;
@@ -82,6 +82,7 @@ public class BaseClass
     		WebDriverManager.iedriver().setup(); 
     		driver=new InternetExplorerDriver();
     	}
+    	driver.manage().window().maximize();
     	driver.get(prop.getProperty("url"));
     }
 
@@ -92,19 +93,12 @@ public class BaseClass
 	  {
 	  test=report.createTest(m.getName()); 
 	  }
-	 
-    
-    
     @AfterMethod
     public void afterMethod()
-
     {
 
     	test=null;
     }
-   
- 
-
     @AfterClass
     public void tearDown()
     {
