@@ -102,7 +102,7 @@ public class BaseClass
 	  @BeforeMethod 
 	  public void beforeMethod(Method m) 
 	  {
-	  test=report.createTest(m.getName()); 
+	  test=report.createTest(m.getName()) ; 
 	  }
 	 
     
