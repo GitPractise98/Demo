@@ -1,5 +1,6 @@
 package com.qa.testscript;
 
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.qa.base.BaseClass;
@@ -10,6 +11,7 @@ public class Demo extends BaseClass
 	public void run()
 	{
 		System.out.println("hi");
+		Assert.assertTrue(false);
 	}
 	
 	@Test

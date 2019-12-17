@@ -4,14 +4,20 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Properties;
 
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.testng.annotations.AfterSuite;
-import org.testng.annotations.AfterTest;
+import org.testng.ITestResult;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -29,7 +35,7 @@ public class BaseClass
 {
 	String browser=null;
 	Properties prop;
-	WebDriver driver;
+	public WebDriver driver;
 	ExtentHtmlReporter htmlreport;
     public ExtentReports report;
 	public ExtentTest test;
@@ -82,6 +88,7 @@ public class BaseClass
     	}
     	driver.manage().window().maximize();
     	driver.get(prop.getProperty("url"));
+    	
     }
     
     
@@ -95,9 +102,23 @@ public class BaseClass
     
     
     @AfterMethod
-    public void afterMethod()
+    public void afterMethod(ITestResult result)
     {
     	test=null;
+    	if(result.getStatus()==result.FAILURE)
+    	{
+ String testname=result.getName();
+		
+		File filesrc = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+		DateFormat	dateFormat = new SimpleDateFormat("dd-MMM-yyyy__hh_mm_ssaa");
+		File targetFile = new File("./Screenshots/" + dateFormat.format(new Date()) + testname +".png");
+		try {
+			FileUtils.copyFile(filesrc, targetFile);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+    	}
     }
    
     
