@@ -94,11 +94,27 @@ public class BaseClass
 	  test=report.createTest(m.getName()); 
 	  }
     @AfterMethod
-    public void afterMethod()
-    {
+   public void afterMethod(ITestResult result)
+   {
 
     	test=null;
+    	if(result.getStatus()==result.FAILURE)
+    	{
+ String testname=result.getName();
+		
+		File filesrc = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+		DateFormat	dateFormat = new SimpleDateFormat("dd-MMM-yyyy__hh_mm_ssaa");
+		File targetFile = new File("./Screenshots/" + dateFormat.format(new Date()) + testname +".png");
+		try {
+			FileUtils.copyFile(filesrc, targetFile);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+    	}
     }
+   
+ 
     @AfterClass
     public void tearDown()
     {
