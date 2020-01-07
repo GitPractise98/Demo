@@ -5,15 +5,13 @@
     <classes>
       <class name="com.qa.testscript.Demo">
         <methods>
-          <include name="run3"/>
           <include name="report_flush"/>
           <include name="tearDown"/>
-          <include name="run"/>
           <include name="beforeMethod"/>
           <include name="Report_setup"/>
-          <include name="run2"/>
           <include name="afterMethod"/>
           <include name="setup"/>
+          <include name="TC_LA_01"/>
         </methods>
       </class> <!-- com.qa.testscript.Demo -->
     </classes>

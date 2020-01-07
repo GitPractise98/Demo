@@ -3,14 +3,13 @@ package com.qa.base;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.Properties;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.testng.annotations.AfterSuite;
-import org.testng.annotations.AfterTest;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
@@ -22,6 +21,7 @@ import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
+import com.qa.util.EventHandler;
 import com.qa.util.TakeScreenShot;
 
 
@@ -35,6 +35,7 @@ public class BaseClass
 	ExtentHtmlReporter htmlreport;
     public ExtentReports report;
 	public ExtentTest test;
+	protected EventFiringWebDriver eventDriver;
 	
 	public BaseClass()
 	{
@@ -60,6 +61,7 @@ public class BaseClass
 		htmlreport.config().setReportName("UI Testing report");
 		report =  new ExtentReports();
 		report.attachReporter(htmlreport);
+		
 
 	}
 	
@@ -82,33 +84,66 @@ public class BaseClass
     		WebDriverManager.iedriver().setup(); 
     		driver=new InternetExplorerDriver();
     	}
-    	driver.manage().window().maximize();
-    	driver.get(prop.getProperty("url"));
+    	 EventFiringWebDriver eventDriver = new EventFiringWebDriver(driver);
+    	 EventHandler handler = new EventHandler();
+    	 eventDriver.register(handler);
+    	 eventDriver.manage().window().maximize();
+    	eventDriver.get(prop.getProperty("url"));
     }
 
-    
-	
 	  @BeforeMethod 
-	  public void beforeMethod(Method m) 
+	  public void beforeMethod(ITestResult itr) 
 	  {
-	  test=report.createTest(m.getName()); 
+	  test=report.createTest (itr.getMethod().getMethodName()+";"+itr.getMethod().getDescription()); 
 	  }
-    @AfterMethod
-    public void afterMethod()
-    {
 
-    	test=null;
-    }
+	@AfterMethod
+	public void afterMethod(ITestResult result)
+	 {
+		try
+		{
+		if(result.getStatus()==ITestResult.FAILURE)
+		{
+			test.log(Status.FAIL, "Test Case is failed : " + result.getName());
+			test.log(Status.FAIL, "Test Case is failed : " + result.getThrowable());
+		try
+		   {
+			TakeScreenShot.take_screenshot(driver, result.getName());
+	    	} 
+		catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+					
+		}
+		else if(result.getStatus()==ITestResult.SUCCESS)
+		{
+			test.log(Status.PASS, "Test case is pass : " + result.getName());
+		}
+		else if(result.getStatus()==ITestResult.SKIP)
+		{
+			test.log(Status.PASS, "Test case is pass : " + result.getName());
+			test.log(Status.FAIL, "Test Case is failed : " + result.getThrowable());
+
+		}		
+		}
+		catch (Exception e)
+		{
+			System.out.println(e.getMessage());
+		}
+	
+	}
     @AfterClass
     public void tearDown()
     {
-    	driver.quit();
+  
     }
     
     @AfterSuite
 	public void report_flush()
 	{
 	report.flush();
+  	driver.quit();
     }
 
 

@@ -9,9 +9,9 @@ import com.qa.base.BaseClass;
 public class TestListener extends BaseClass implements ITestListener {
 
 	@Override
-	public void onTestStart(ITestResult result) {
-		// TODO Auto-generated method stub
-		
+	public void onTestStart(ITestResult result) 
+	{
+		System.out.println("inside method afterChangeValueOf on ");
 	}
 
 	@Override
