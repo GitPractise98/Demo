@@ -23,7 +23,7 @@ public class Demo1 extends BaseClass
 		System.out.println("hello");
 	}
 	
-	@Test
+	@Test(priority=1)
 	public void run3()
 	{
 		 test=report.createTest("To Verify user should be able to cancel the Lead Activity job from Automic"); 
