@@ -100,9 +100,9 @@ public class BaseClass
     
 	
 	  @BeforeMethod 
-	  public void beforeMethod(Method m) 
+	  public void beforeMethod(ITestResult result) 
 	  {
-	  test=report.createTest(m.getName()); 
+	  test=report.createTest(result.getMethod().getMethodName(),result.getMethod().getDescription()); 
 	  }
 	 
     
@@ -115,20 +115,18 @@ public class BaseClass
     {
 
     	test=null;
-    	if(result.getStatus()==result.FAILURE)
-    	{
- String testname=result.getName();
 		
-		File filesrc = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-		DateFormat	dateFormat = new SimpleDateFormat("dd-MMM-yyyy__hh_mm_ssaa");
-		File targetFile = new File("./Screenshots/" + dateFormat.format(new Date()) + testname +".png");
-		try {
-			FileUtils.copyFile(filesrc, targetFile);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
-    	}
+		  if(result.getStatus()==result.FAILURE) { String testname=result.getName();
+		  
+		  File filesrc = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+		  DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy__hh_mm_ssaa"); File
+		  targetFile = new File("./Screenshots/" + dateFormat.format(new Date()) +
+		  testname +".png"); try { FileUtils.copyFile(filesrc, targetFile); } 
+		  catch(IOException e) 
+		  { // TODO Auto-generated catch block e.printStackTrace();
+		  } 
+		  }
+		 
     }
    
  

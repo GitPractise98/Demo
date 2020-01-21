@@ -18,55 +18,57 @@ import com.qa.base.BaseClass;
 
 public class TestListener extends BaseClass implements ITestListener {
 
-	@Override
 	public void onTestStart(ITestResult result) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void onTestSuccess(ITestResult result) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void onTestFailure(ITestResult result) {
-		/*
-		 * TakesScreenshot scrShot =(TakesScreenshot) driver; File
-		 * scrnfile=scrShot.getScreenshotAs(OutputType.FILE); try {
-		 * FileUtils.copyFile(scrnfile, new File("./Screenshots/"+ result.getName()+
-		 * ".png")); } catch (IOException e) { // TODO Auto-generated catch block
-		 * e.printStackTrace(); }
-		 */
-		
+		// TODO Auto-generated method stub
+		String methodName=result.getName();
+		takeScreenShot(methodName);
 		
 	}
 
-	@Override
 	public void onTestSkipped(ITestResult result) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void onTestFailedButWithinSuccessPercentage(ITestResult result) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void onStart(ITestContext context) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void onFinish(ITestContext context) {
 		// TODO Auto-generated method stub
 		
 	}
 	
+	public void takeScreenShot(String methodName)
+	{
+		TakesScreenshot scrn=(TakesScreenshot)driver;
+		File scrnFile=scrn.getScreenshotAs(OutputType.FILE);
+		try
+		{
+			FileUtils.copyFile(scrnFile,new File("./Screenshots/"+methodName+".png"));
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+
 	
 
 }
