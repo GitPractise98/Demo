@@ -91,11 +91,13 @@ public class BaseClass
     	eventDriver.get(prop.getProperty("url"));
     }
 
+
 	  @BeforeMethod 
 	  public void beforeMethod(ITestResult itr) 
 	  {
 	  test=report.createTest (itr.getMethod().getMethodName()+";"+itr.getMethod().getDescription()); 
 	  }
+
 
 	@AfterMethod
 	public void afterMethod(ITestResult result)
@@ -133,6 +135,7 @@ public class BaseClass
 		}
 	
 	}
+
     @AfterClass
     public void tearDown()
     {
