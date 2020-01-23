@@ -5,6 +5,7 @@
     <classes>
       <class name="com.qa.testscript.Demo">
         <methods>
+          <include name="run3"/>
           <include name="report_flush"/>
           <include name="tearDown"/>
           <include name="beforeMethod"/>

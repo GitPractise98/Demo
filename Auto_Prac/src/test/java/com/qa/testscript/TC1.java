@@ -1,21 +1,14 @@
 package com.qa.testscript;
 
 import org.openqa.selenium.By;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import com.qa.base.BaseClass;
+import com.qa.util.Retry;
 
 
-public class Demo extends BaseClass
-{
-	@Test(description=" user should be able to run the Lead Activity job from Automic")	
-	public void TC_LA_01()
-	{	
-//		 test=report.createTest("To Verify user should be able to run the Lead Activity job from Automic"); 
-		System.out.println("1st Test Case Executed : ");
-		driver.findElement(By.xpath("//*[@id='c-shellmenu_51']")).click();
-		
-	}
-	
+public class TC1 extends BaseClass
+{	
 	@Test
 	public void run2()
 	{
@@ -23,11 +16,11 @@ public class Demo extends BaseClass
 		 driver.navigate().to("https://www/google.com");;
 	}
 	
-	@Test
+	@Test(retryAnalyzer = Retry.class)
 	public void run3()
 	{
 		 test=report.createTest("To Verify user should be able to cancel the Lead Activity job from Automic"); 
-		 driver.navigate().back();
+		 Assert.assertEquals(4,5);
 	}
 
 
